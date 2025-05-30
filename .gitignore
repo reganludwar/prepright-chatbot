@@ -1,4 +1,7 @@
 
 
-# Local Netlify folder
-.netlify
+# Netlify’s local cache/state
+.netlify/
+
+# Local environment file (your API keys)
+.env
