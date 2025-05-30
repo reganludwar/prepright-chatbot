@@ -1,19 +1,13 @@
-// 🔐 Define your API keys here (only once at the top)
-const SPOONACULAR_KEY = "c1bf144f11ad470bb0c366755f71b6b4";
-
-// Open AI API Key
-const OPENAI_KEY = process.env.OPENAI_KEY || "";  // key injected at deploy time
-
-
+// main.js
 
 // ————————————————————————————————————————————————————————————
-// Function: call your Netlify proxy for Spoonacular
+// 1) Spoonacular lookup via Netlify Function
 async function checkFoodWithSpoonacular(query) {
   try {
-    const response = await fetch(
+    const res  = await fetch(
       `/.netlify/functions/checkFood?query=${encodeURIComponent(query)}`
     );
-    const data = await response.json();
+    const data = await res.json();
     console.log("✅ Spoonacular response via Netlify:", data);
 
     if (data.length > 0) {
@@ -21,71 +15,59 @@ async function checkFoodWithSpoonacular(query) {
     } else {
       return `I couldn’t find that food in the Spoonacular database. Please try a different item.`;
     }
-
-  } catch (error) {
-    console.error("Spoonacular error:", error);
+  } catch (err) {
+    console.error("Spoonacular proxy error:", err);
     return "There was a problem checking that food. Try again shortly.";
   }
 }
 
 // ————————————————————————————————————————————————————————————
-// Function: call OpenAI with your prompt + Spoonacular lookup
+// 2) AI reply via Netlify Function
 async function getGPTReply(message) {
-  console.log("🔑 OPENAI_KEY present?", !!OPENAI_KEY);
-
-  const url     = "https://api.openai.com/v1/chat/completions";
-  const headers = {
-    "Content-Type":  "application/json",
-    "Authorization": `Bearer ${OPENAI_KEY}`
-  };
-  const body = JSON.stringify({
-    model: "gpt-3.5-turbo",
-    messages: [
-      { role: "system", content: "You are a colonoscopy diet assistant. Be strict but kind." },
-      { role: "user",   content: message }
-    ]
-  });
-
   try {
-    const res = await fetch(url, { method: "POST", headers, body });
-    console.log(`🌐 OpenAI status: ${res.status} ${res.statusText}`);
+    // First get the Spoonacular lookup message
+    const spoonacularMsg = await checkFoodWithSpoonacular(message);
+
+    // Then call your OpenAI proxy function
+    const res  = await fetch(
+      `/.netlify/functions/getGPT?message=${encodeURIComponent(message)}&info=${encodeURIComponent(spoonacularMsg)}`
+    );
+    console.log(`🌐 OpenAI proxy status: ${res.status} ${res.statusText}`);
 
     const data = await res.json();
-    console.log("📦 OpenAI response body:", data);
+    console.log("🤖 OpenAI proxy response body:", data);
 
-    if (res.status === 429) {
-      return "I’m getting rate-limited by OpenAI right now. Please wait a moment and try again.";
+    if (res.status !== 200) {
+      const errMsg = data.error?.message || "Unknown error from AI service";
+      return `Error: ${errMsg}`;
     }
-    if (data.error) {
-      return `OpenAI error: ${data.error.message}`;
-    }
+    // Return the AI’s text reply
     return data.choices?.[0]?.message?.content
-         || "OpenAI didn’t give a usable reply.";
-
+         || "OpenAI didn’t return a valid answer.";
   } catch (err) {
-    console.error("❌ Network or fetch error:", err);
-    return "Network error when contacting OpenAI.";
+    console.error("Fetch error contacting OpenAI proxy:", err);
+    return "There was a problem contacting the AI service.";
   }
 }
 
 // ————————————————————————————————————————————————————————————
-// Function: handle user click and render messages
+// 3) UI handler to send & display messages
 function sendMessage() {
-  const input  = document.getElementById("user-input");
+  const input   = document.getElementById("user-input");
   const chatBox = document.getElementById("chat-box");
   const text    = input.value.trim();
   if (!text) return;
 
-  // Show user message
+  // Display the user's message
   chatBox.innerHTML += `<p><strong>You:</strong> ${text}</p>`;
   input.value = "";
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  // Show “typing” indicator
+  // Show a thinking indicator
   chatBox.innerHTML += `<p><em>Bot is thinking...</em></p>`;
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  // Get and render bot reply
+  // Fetch and display the bot reply
   getGPTReply(text).then(reply => {
     // Remove the “thinking” line
     chatBox.innerHTML = chatBox.innerHTML.replace(
@@ -98,5 +80,5 @@ function sendMessage() {
   });
 }
 
-// Expose to HTML onclick
+// Expose sendMessage to be callable from your HTML button’s onclick
 window.sendMessage = sendMessage;
