@@ -1,26 +1,25 @@
-  //Spoonacular API Key
-  const SPOONACULAR_KEY = "c1bf144f11ad470bb0c366755f71b6b4";
-  const fetch = require("node-fetch");
+// netlify/functions/checkFood.js
 
 exports.handler = async function (event, context) {
+  const SPOONACULAR_KEY = process.env.SPOONACULAR_KEY;
   const query = event.queryStringParameters.query;
-  const url = `https://api.spoonacular.com/food/ingredients/autocomplete?query=${encodeURIComponent(query)}&number=1&apiKey=${SPOONACULAR_KEY}`;
+  const url =
+    `https://api.spoonacular.com/food/ingredients/autocomplete` +
+    `?query=${encodeURIComponent(query)}` +
+    `&number=1&apiKey=${encodeURIComponent(SPOONACULAR_KEY)}`;
 
   try {
-    const response = await fetch(url);
-    const text = await response.text();
-    console.log("🍽️ Spoonacular raw response:", text);
-
-    const data = JSON.parse(text);
+    const response = await fetch(url);        // global fetch
+    const data     = await response.json();
     return {
       statusCode: 200,
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     };
   } catch (error) {
     console.error("❌ Spoonacular proxy error:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Spoonacular proxy error" })
+      body: JSON.stringify({ error: "Spoonacular proxy error" }),
     };
   }
 };
