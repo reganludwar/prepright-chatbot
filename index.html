@@ -1,16 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>PrepRight Chatbot</title>
+  <!-- Character encoding for proper text display -->
+  <meta charset="UTF-8" />
+
+  <!-- Ensure responsive scaling on mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- The page title shown in browser tabs -->
+  <title>PrepRight • Colonoscopy Prep Assistant</title>
+
+  <!-- ========================= PWA SETUP ========================= -->
+  <!-- Link to the Web App Manifest, which defines install behavior -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Theme color for the browser toolbar on supported devices -->
+  <meta name="theme-color" content="#0066cc" />
+
+  <!-- iOS support: icon when saving to Home Screen -->
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <!-- Allow your PWA to run standalone on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <!-- iOS status bar style when your PWA is launched -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <!-- ============================================================= -->
+
+  <!-- Link to your CSS styles -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>PrepRight Chatbot</h1>
-  <input type="text" id="user-input" placeholder="Ask something..." />
-  <button onclick="sendMessage()">Send</button>
-  <div id="chat-box"></div>
+  <!-- ======================= CHAT INTERFACE ======================= -->
+  <!-- Container where all chat messages appear -->
+  <div id="chat-box" class="chat-box">
+    <!-- Example initial message (you can remove this line) -->
+    <p><em>Welcome to PrepRight! Ask me what you can eat today.</em></p>
+  </div>
 
+  <!-- Input area for the user to type their query -->
+  <div class="input-area">
+    <!-- Text field where the user types -->
+    <input
+      type="text"
+      id="user-input"
+      placeholder="E.g., Can I eat toast?"
+      autocomplete="off"
+    />
+    <!-- Button to send the message (calls sendMessage() in main.js) -->
+    <button onclick="sendMessage()">Send</button>
+  </div>
+  <!-- ============================================================= -->
+
+  <!-- ===================== SCRIPT INCLUDES ======================== -->
+  <!-- Your main JavaScript logic (fetching APIs, updating UI) -->
   <script src="main.js"></script>
+
+  <!--
+    Note: Service worker registration is handled at the bottom of main.js,
+    so you don't need extra code here for it.
+  -->
+  <!-- ============================================================= -->
 </body>
 </html>
-

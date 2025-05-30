@@ -1,100 +1,111 @@
 // main.js (Frontend UI Logic)
 
-// ————————————————————————————————————————————————————————————
-// 1) Spoonacular lookup via Netlify Function
-//    This function sends the user's query to our serverless function
-//    which proxies to Spoonacular, avoiding CORS and hiding our key.
+
+// -------------------- PWA Service Worker Registration --------------------
+// Check if the browser supports service workers
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    // Register the service worker at /sw.js for offline caching
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('✅ Service Worker registered:', reg.scope))
+      .catch(err => console.error('❌ Service Worker registration failed:', err));
+  });
+}
+
+// -------------------- Function: checkFoodWithSpoonacular --------------------
+// Sends the user's food query to our Netlify Function proxy for Spoonacular
+// This keeps our API key secure and bypasses CORS restrictions.
 async function checkFoodWithSpoonacular(query) {
   try {
-    // Fetch from our Netlify function, passing the query as a URL parameter
-    const res  = await fetch(
+    // Fetch from the Netlify Function with the query parameter
+    const response = await fetch(
       `/.netlify/functions/checkFood?query=${encodeURIComponent(query)}`
     );
+    // Parse the JSON array of ingredient matches
+    const data = await response.json();
+    console.log('✅ Spoonacular response via Netlify:', data);
 
-    // Parse the JSON response (an array of ingredient matches)
-    const data = await res.json();
-    console.log("✅ Spoonacular response via Netlify:", data);
-
-    // If Spoonacular found a match, return a user-friendly message
+    // If a match exists, return a friendly message
     if (data.length > 0) {
       return `I found a match for "${data[0].name}". Let me check if it's colonoscopy-safe...`;
     } else {
       // No match found
-      return `I couldn’t find that food in the Spoonacular database. Please try a different item.`;
+      return 'I couldn’t find that food in the Spoonacular database. Please try a different item.';
     }
-  } catch (err) {
-    // Log error and inform the user
-    console.error("Spoonacular proxy error:", err);
-    return "There was a problem checking that food. Try again shortly.";
+  } catch (error) {
+    // Log and return an error message if the fetch fails
+    console.error('❌ Spoonacular proxy error:', error);
+    return 'There was a problem checking that food. Try again shortly.';
   }
 }
 
-// ————————————————————————————————————————————————————————————
-// 2) AI reply via Netlify Function
-//    This function calls our OpenAI proxy with both the original
-//    user message and the Spoonacular lookup result.
-async function getGPTReply(message) {
+// -------------------- Function: getGPTReply --------------------
+// Sends the user's message and Spoonacular result to our OpenAI proxy
+async function getGPTReply(userMessage) {
   try {
-    // First get the Spoonacular lookup
-    const spoonacularMsg = await checkFoodWithSpoonacular(message);
+    // First, get the Spoonacular lookup message
+    const spoonacularMsg = await checkFoodWithSpoonacular(userMessage);
 
-    // Then call our OpenAI proxy function with both pieces of info
-    const res  = await fetch(
-      `/.netlify/functions/getGPT?message=${encodeURIComponent(message)}` +
+    // Now call the OpenAI proxy with both the user message and Spoonacular info
+    const response = await fetch(
+      `/.netlify/functions/getGPT?message=${encodeURIComponent(userMessage)}` +
       `&info=${encodeURIComponent(spoonacularMsg)}`
     );
-    console.log(`🌐 OpenAI proxy status: ${res.status} ${res.statusText}`);
+    console.log(`🌐 OpenAI proxy status: ${response.status} ${response.statusText}`);
 
-    // Parse and log the AI's JSON response
-    const data = await res.json();
-    console.log("🤖 OpenAI proxy response body:", data);
+    // Parse the JSON response
+    const data = await response.json();
+    console.log('🤖 OpenAI proxy response body:', data);
 
-    // Handle non-200 status codes (errors)
-    if (res.status !== 200) {
-      const errMsg = data.error?.message || "Unknown error from AI service";
-      return `Error: ${errMsg}`;
+    // Handle non-200 HTTP status codes
+    if (response.status !== 200) {
+      const errorMsg = data.error?.message || 'Unknown error from AI service';
+      return `Error: ${errorMsg}`;
     }
 
-    // Safely extract the assistant's reply
-    return data.choices?.[0]?.message?.content
-         || "OpenAI didn’t return a valid answer.";
-  } catch (err) {
+    // Return the AI's reply text
+    return data.choices?.[0]?.message?.content || 'OpenAI didn’t return a valid answer.';
+  } catch (error) {
     // Network or parsing error
-    console.error("Fetch error contacting OpenAI proxy:", err);
-    return "There was a problem contacting the AI service.";
+    console.error('❌ Fetch error contacting OpenAI proxy:', error);
+    return 'There was a problem contacting the AI service.';
   }
 }
 
-// ————————————————————————————————————————————————————————————
-// 3) UI handler to send & display messages
+// -------------------- Function: sendMessage --------------------
+// Triggered when the user clicks Send: updates UI and gets bot reply
 function sendMessage() {
-  // Grab the user input and chat display elements
-  const input   = document.getElementById("user-input");
-  const chatBox = document.getElementById("chat-box");
-  const text    = input.value.trim();
-  if (!text) return; // ignore empty submissions
+  // Get references to the DOM elements
+  const inputField = document.getElementById('user-input');
+  const chatBox    = document.getElementById('chat-box');
+  const message    = inputField.value.trim();
 
-  // Display the user's message in the chat
-  chatBox.innerHTML += `<p><strong>You:</strong> ${text}</p>`;
-  input.value = "";
+  // Do nothing if the input is empty
+  if (!message) return;
+
+  // Display the user's message in the chat box
+  chatBox.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+  // Clear the input field
+  inputField.value = '';
+  // Scroll to bottom so the new message is visible
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  // Show a "typing" indicator while the bot thinks
-  chatBox.innerHTML += `<p><em>Bot is thinking...</em></p>`;
+  // Show a typing indicator while waiting for the bot
+  chatBox.innerHTML += '<p><em>Bot is thinking...</em></p>';
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  // Fetch the bot's reply and render it
-  getGPTReply(text).then(reply => {
-    // Remove the "thinking" line
+  // Get the bot's reply and update the chat box
+  getGPTReply(message).then(botReply => {
+    // Remove the "Bot is thinking..." indicator
     chatBox.innerHTML = chatBox.innerHTML.replace(
-      /<p><em>Bot is thinking\.\.\.<\/em><\/p>/,
-      ""
+      /<p><em>Bot is thinking\.\.\.<\/em><\/p>/, ''
     );
-    // Append the bot's actual reply
-    chatBox.innerHTML += `<p><strong>Bot:</strong> ${reply}</p>`;
+    // Display the bot's reply
+    chatBox.innerHTML += `<p><strong>Bot:</strong> ${botReply}</p>`;
+    // Scroll again to show the reply
     chatBox.scrollTop = chatBox.scrollHeight;
   });
 }
 
-// Make sendMessage() available to the HTML button's onclick
+// Expose sendMessage to the global scope so the HTML onclick can find it
 window.sendMessage = sendMessage;

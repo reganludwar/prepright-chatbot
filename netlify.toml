@@ -1,0 +1,8 @@
+[build]
+  functions = "netlify/functions"
+
+[dev]
+  functions = "netlify/functions"
+  # (optional) if your site needs a different port or command you can add:
+  # command = "npm start"
+  # port    = 8888
