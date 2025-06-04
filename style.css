@@ -6,3 +6,10 @@
 #prep-guidelines button {
   margin-top: 5px;
 }
+
+/* Highlight the important note displayed on the welcome page */
+.prep-note {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #d33;
+}
