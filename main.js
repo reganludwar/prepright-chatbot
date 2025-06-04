@@ -103,9 +103,18 @@ function sendMessage() {
     // Display the bot's reply
     chatBox.innerHTML += `<p><strong>Bot:</strong> ${botReply}</p>`;
     // Scroll again to show the reply
-    chatBox.scrollTop = chatBox.scrollHeight;
+  chatBox.scrollTop = chatBox.scrollHeight;
   });
 }
 
 // Expose sendMessage to the global scope so the HTML onclick can find it
 window.sendMessage = sendMessage;
+
+// Hide the prep guidelines banner when dismissed
+const dismissBtn = document.getElementById('dismiss-guidelines');
+if (dismissBtn) {
+  dismissBtn.addEventListener('click', () => {
+    const guide = document.getElementById('prep-guidelines');
+    if (guide) guide.style.display = 'none';
+  });
+}
