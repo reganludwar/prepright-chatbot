@@ -1,1 +1,8 @@
-
+#prep-guidelines {
+  background-color: #eef;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+#prep-guidelines button {
+  margin-top: 5px;
+}
