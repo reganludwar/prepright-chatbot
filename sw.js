@@ -2,10 +2,7 @@
 //Service Worker for Offline
 
 const CACHE_NAME = 'prepright-cache-v1';
-const ASSETS = [
-  '/', '/index.html', '/main.js', '/style.css', '/manifest.json',
-  '/icons/icon-192.png', '/icons/icon-512.png'
-];
+const ASSETS = ['/', '/index.html', '/main.js', '/style.css', '/manifest.json'];
 
 // On install, cache all files
 self.addEventListener('install', evt => {
