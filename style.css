@@ -54,13 +54,13 @@ body {
 .logo {
   display: block;
   margin: 20px;
-  width: 200px;   /* changed from 150px */
+  width: 225px;   /* changed from 150px */
   height: auto;
 }
 
 @media (min-width: 600px) {
   .logo {
-    width: 250px; /* changed from 200px */
+    width: 275px; /* changed from 200px */
   }
 }
 
