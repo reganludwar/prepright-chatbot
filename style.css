@@ -54,19 +54,19 @@ body {
 .logo {
   display: block;
   margin: 20px;
-  width: 150px;
+  width: 200px;   /* changed from 150px */
   height: auto;
 }
 
 @media (min-width: 600px) {
   .logo {
-    width: 200px;
+    width: 250px; /* changed from 200px */
   }
 }
 
 @media (min-width: 1024px) {
   .logo {
-    width: 250px;
+    width: 300px; /* changed from 250px */
   }
 }
 
