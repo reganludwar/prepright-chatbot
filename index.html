@@ -18,7 +18,7 @@
   <meta name="theme-color" content="#0066cc" />
 
   <!-- iOS support: icon when saving to Home Screen -->
-  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png" />
   <!-- Allow your PWA to run standalone on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <!-- iOS status bar style when your PWA is launched -->
@@ -29,6 +29,21 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div id="prep-guidelines">
+    <p>Please review these prep guidelines before you begin chatting:</p>
+    <ul>
+      <li>Stick to clear liquids the day before your procedure.</li>
+      <li>Avoid anything with red or purple dye.</li>
+      <li>Take your prep medications exactly as directed.</li>
+      <li>Contact your healthcare team if you have concerns.</li>
+    </ul>
+    <button id="dismiss-guidelines">Got it</button>
+    <!-- Important Note -->
+    <p class="prep-note">
+      Following this regimen closely reduces the need to repeat the procedure and
+      ensures optimal visualization during your colonoscopy.
+    </p>
+  </div>
   <!-- ======================= CHAT INTERFACE ======================= -->
   <!-- Container where all chat messages appear -->
   <div id="chat-box" class="chat-box">

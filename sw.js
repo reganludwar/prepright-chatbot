@@ -1,10 +1,16 @@
 // sw.js
 //Service Worker for Offline
 
-const CACHE_NAME = 'prepright-cache-v1';
+const CACHE_NAME = 'prepright-cache-v2';
 const ASSETS = [
-  '/', '/index.html', '/main.js', '/style.css', '/manifest.json',
-  '/icons/icon-192.png', '/icons/icon-512.png'
+  '/',
+  '/index.html',
+  '/main.js',
+  '/style.css',
+  '/manifest.json',
+  'icons/icon-180.png',
+  'icons/icon-192.png',
+  'icons/icon-512.png'
 ];
 
 // On install, cache all files
