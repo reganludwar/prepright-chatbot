@@ -87,7 +87,7 @@ textarea {
 
 /* Ensure chat messages don't overflow the viewport */
 .chat-box {
-  padding: 10px;
+  padding: 10px 20px; /*add breathing room to left and right side*/
   width: 100%;
   max-width: 100%;
   overflow-wrap: break-word;
