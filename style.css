@@ -12,6 +12,9 @@ html {
 body {
   margin: 0;
   overflow-x: hidden;
+  font-family: 'Roboto', 'Open Sans', 'Lato', 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 #prep-guidelines {
@@ -76,7 +79,7 @@ body {
 /* Prevent zooming on focus in iOS */
 input,
   textarea {
-    font-size: 16px;
+    font-size: 1rem;
   }
 
 /* Ensure chat messages don't overflow the viewport */
@@ -85,4 +88,22 @@ input,
   width: 100%;
   max-width: 100%;
   overflow-wrap: break-word;
+}
+
+button {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.75rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.25rem;
 }
