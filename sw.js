@@ -13,7 +13,7 @@ const ASSETS = [
   'icons/icon-192.png',
   'icons/icon-256.png',
   'icons/icon-512.png',
-  'icons/logo-180x60.png'
+  'icons/logo.svg'
 ];
 
 // On install, cache all files
