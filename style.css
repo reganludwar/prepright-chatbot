@@ -7,13 +7,14 @@
 
 html {
   overflow-x: hidden;
+  font-size: 18px;
 }
 
 body {
   margin: 0;
   overflow-x: hidden;
   font-family: 'Roboto', 'Open Sans', 'Lato', 'Inter', Arial, Helvetica, sans-serif;
-  font-size: 1rem;
+  font-size: 18px;
   line-height: 1.5;
 }
 
@@ -81,7 +82,7 @@ body {
 /* Prevent zooming on focus in iOS by ensuring at least 16px font size */
 input,
 textarea {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 /* Ensure chat messages don't overflow the viewport */
@@ -93,7 +94,7 @@ textarea {
 }
 
 button {
-  font-size: 1rem;
+  font-size: 18px;
   line-height: 1.4;
 }
 
