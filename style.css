@@ -62,6 +62,13 @@ body {
 
 /* Prevent zooming on focus in iOS */
 input,
-textarea {
-  font-size: 16px;
+  textarea {
+    font-size: 16px;
+  }
+
+/* Ensure chat messages don't overflow the viewport */
+.chat-box {
+  padding: 10px;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
