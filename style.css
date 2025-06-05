@@ -89,7 +89,8 @@ textarea {
 .chat-box {
   padding: 10px 20px; /*add breathing room to left and right side*/
   width: 100%;
-  max-width: 100%;
+  box-sizing: border-box; /*add breathing room to left and right side*/
+  /*max-width: 100%; removed to add breathing room*/
   overflow-wrap: break-word;
 }
 
