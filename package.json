@@ -1,0 +1,9 @@
+{
+  "name": "prepright-chatbot",
+  "version": "1.0.0",
+  "description": "PrepRight Chatbot PWA with serverless functions",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No test suite yet\""
+  }
+}
