@@ -13,3 +13,9 @@
   font-weight: bold;
   color: #d33;
 }
+
+/* Center the logo at the top of the page */
+.logo {
+  display: block;
+  margin: 20px auto;
+}
