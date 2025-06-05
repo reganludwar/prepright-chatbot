@@ -16,8 +16,21 @@ body {
 
 #prep-guidelines {
   background-color: #eef;
-  padding: 10px;
+  padding: 1rem;
   border-bottom: 1px solid #ccc;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+#prep-guidelines ul {
+  padding-left: 1.5rem;
+  margin: 0;
+}
+#prep-guidelines li {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 #prep-guidelines button {
   margin-top: 5px;
