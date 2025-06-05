@@ -38,3 +38,13 @@ body {
     width: 250px;
   }
 }
+
+
+.input-area {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+}
+.input-area input {
+  flex: 1;
+}
