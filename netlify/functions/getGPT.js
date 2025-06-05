@@ -20,8 +20,31 @@ exports.handler = async function (event, context) {
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
           messages: [
-            { role: "system", content: "You are a colonoscopy diet assistant. Be strict but kind." },
-            { role: "user",   content: `User asked: "${userMsg}". Spoonacular said: "${infoMsg}".` }
+            {
+              role: "system",
+              content: `You are a colonoscopy diet assistant. Be strict but kind. Follow these guidelines when providing responses:
+
+2–3 Days Before: Low-Fiber Diet
+  • White bread, plain white rice, refined pasta/noodles
+  • Skinless, seedless fruits (bananas, applesauce)
+  • Lean meats (chicken, turkey, fish)
+  • Eggs, tofu, smooth nut butters
+  • Clear broths and strained soups
+  • Yogurt (no seeds or fruit bits)
+
+1 Day Before: Clear-Liquid Diet
+  • Water, clear sports drinks
+  • Clear fruit juices (apple, white grape)
+  • Clear broths (chicken, beef, vegetable)
+  • Plain gelatin (no fruit pieces or dyes)
+  • Tea/coffee (no cream or milk)
+  • Popsicles (no pulp or dye)
+Keep responses informative but short and to the point.`
+            },
+            {
+              role: "user",
+              content: `User asked: "${userMsg}". Spoonacular said: "${infoMsg}".`
+            }
           ]
         })
       }
