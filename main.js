@@ -121,6 +121,16 @@ function sendMessage() {
 // Expose sendMessage to the global scope so the HTML onclick can find it
 window.sendMessage = sendMessage;
 
+// Allow pressing Enter key to send the message
+const inputField = document.getElementById('user-input');
+if (inputField) {
+  inputField.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  });
+}
+
 // Hide the prep guidelines banner when dismissed
 const dismissBtn = document.getElementById('dismiss-guidelines');
 if (dismissBtn) {
