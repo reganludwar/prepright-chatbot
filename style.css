@@ -110,3 +110,13 @@ h3 {
 h4 {
   font-size: 1.25rem;
 }
+
+/* Style for the Send button arrow */
+#send-btn {
+  font-size: 1.5rem;
+  color: #28a745;
+  background: none;
+  border: none;
+  padding: 0 10px;
+  cursor: pointer;
+}
