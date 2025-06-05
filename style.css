@@ -59,3 +59,9 @@ body {
 .input-area input {
   flex: 1;
 }
+
+/* Prevent zooming on focus in iOS */
+input,
+textarea {
+  font-size: 16px;
+}
