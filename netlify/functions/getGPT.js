@@ -4,8 +4,24 @@
 exports.handler = async function (event, context) {
   // Read our OpenAI key from environment
   const OPENAI_KEY = process.env.OPENAI_KEY;
-  const userMsg    = event.queryStringParameters.message;
-  const infoMsg    = event.queryStringParameters.info;
+  const userMsg = event.queryStringParameters.message;
+  const infoMsg = event.queryStringParameters.info;
+
+  if (!OPENAI_KEY) {
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Missing OPENAI_KEY' })
+    };
+  }
+
+  if (!userMsg) {
+    return {
+      statusCode: 400,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Missing message parameter' })
+    };
+  }
 
   try {
     // Call OpenAI's Chat Completions endpoint
@@ -51,9 +67,17 @@ Keep responses informative but short and to the point.`
     );
 
     const data = await response.json();
-    return { statusCode: response.status, body: JSON.stringify(data) };
+    return {
+      statusCode: response.status,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    };
   } catch (error) {
-    console.error("❌ OpenAI proxy error:", error);
-    return { statusCode: 500, body: JSON.stringify({ error: "OpenAI proxy error" }) };
+    console.error('❌ OpenAI proxy error:', error);
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'OpenAI proxy error' })
+    };
   }
 };
