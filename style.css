@@ -76,11 +76,11 @@ body {
   flex: 1;
 }
 
-/* Prevent zooming on focus in iOS */
+/* Prevent zooming on focus in iOS by ensuring at least 16px font size */
 input,
-  textarea {
-    font-size: 1rem;
-  }
+textarea {
+  font-size: 16px;
+}
 
 /* Ensure chat messages don't overflow the viewport */
 .chat-box {
