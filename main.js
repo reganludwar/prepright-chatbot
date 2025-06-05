@@ -2,15 +2,15 @@
 
 
 // -------------------- PWA Service Worker Registration --------------------
-// Check if the browser supports service workers
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    // Register the service worker at /sw.js for offline caching
-    navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('✅ Service Worker registered:', reg.scope))
-      .catch(err => console.error('❌ Service Worker registration failed:', err));
-  });
-}
+// Temporarily disabled for testing; uncomment to enable offline caching.
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//     // Register the service worker at /sw.js for offline caching
+//     navigator.serviceWorker.register('/sw.js')
+//       .then(reg => console.log('✅ Service Worker registered:', reg.scope))
+//       .catch(err => console.error('❌ Service Worker registration failed:', err));
+//   });
+// }
 
 // -------------------- Helper: escapeHtml --------------------
 // Escapes special characters for safe HTML insertion
