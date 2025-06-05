@@ -69,6 +69,7 @@ input,
 /* Ensure chat messages don't overflow the viewport */
 .chat-box {
   padding: 10px;
+  width: 100%;
   max-width: 100%;
   overflow-wrap: break-word;
 }
