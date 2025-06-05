@@ -1,7 +1,7 @@
 // sw.js
 //Service Worker for Offline
 
-const CACHE_NAME = 'prepright-cache-v2';
+const CACHE_NAME = 'prepright-cache-v3';
 const ASSETS = [
   '/',
   '/index.html',
