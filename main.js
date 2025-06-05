@@ -12,6 +12,17 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// -------------------- Helper: escapeHtml --------------------
+// Escapes special characters for safe HTML insertion
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // -------------------- Function: checkFoodWithSpoonacular --------------------
 // Sends the user's food query to our Netlify Function proxy for Spoonacular
 // This keeps our API key secure and bypasses CORS restrictions.
@@ -84,7 +95,7 @@ function sendMessage() {
   if (!message) return;
 
   // Display the user's message in the chat box
-  chatBox.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+  chatBox.innerHTML += `<p><strong>You:</strong> ${escapeHtml(message)}</p>`;
   // Clear the input field
   inputField.value = '';
   // Scroll to bottom so the new message is visible
@@ -101,7 +112,7 @@ function sendMessage() {
       /<p><em>Bot is thinking\.\.\.<\/em><\/p>/, ''
     );
     // Display the bot's reply
-    chatBox.innerHTML += `<p><strong>Bot:</strong> ${botReply}</p>`;
+    chatBox.innerHTML += `<p><strong>Bot:</strong> ${escapeHtml(botReply)}</p>`;
     // Scroll again to show the reply
   chatBox.scrollTop = chatBox.scrollHeight;
   });
