@@ -14,8 +14,8 @@
   color: #d33;
 }
 
-/* Center the logo at the top of the page */
+/* Position the logo in the top left corner */
 .logo {
   display: block;
-  margin: 20px auto;
+  margin: 20px;
 }
